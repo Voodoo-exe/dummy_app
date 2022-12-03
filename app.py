@@ -5,44 +5,41 @@ import unittest
 app = Flask(__name__)
 # app.config.from_object(__name__)
 
+
 @app.route('/')
 def welcome():
     return render_template('form.html')
 
+
 def calc(var_1, var_2, operation):
-        if(operation == 'Addition'):
-            result = var_1 + var_2
-        elif(operation == 'Subtraction'):
-            result = var_1 - var_2
-        elif(operation == 'Multiplication'):
-            result = var_1 * var_2
-        elif(operation == 'Division'):
-            if(var_1==0 and var_2==0):
-                result = 0
-            
-            else:
-                result = var_1 / var_2
-        else:
+    if(operation == 'Addition'):
+        result = var_1 + var_2
+    elif(operation == 'Subtraction'):
+        result = var_1 - var_2
+    elif(operation == 'Multiplication'):
+        result = var_1 * var_2
+    elif(operation == 'Division'):
+        if(var_1 == 0 and var_2 == 0):
             result = 0
-            
-        return result
+        elif var_2 == 0:
+            return 'Undefined'
+        else:
+            result = var_1 / var_2
+    else:
+        result = 0
+
+    return result
+
 
 @app.route('/', methods=['POST'])
 def result():
     var_1 = request.form.get("var_1", type=int, default=0)
     var_2 = request.form.get("var_2", type=int, default=0)
     operation = request.form.get("operation")
-    
-    
-    entry = calc(var_1,var_2,operation)
+
+    entry = calc(var_1, var_2, operation)
     return render_template('form.html', entry=entry)
 
 
-        
-        
-        
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-
